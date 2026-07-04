@@ -1,0 +1,83 @@
+[
+  {
+    "id": "c1",
+    "platform": "instagram",
+    "username": "tech_charles",
+    "text": "Bro, the audio cuts out entirely at 02:45! Can you re-upload? I missed the final steps.",
+    "aiCategory": "urgent",
+    "hasAiReply": true,
+    "suggestedReply": "Hey Charles! Thanks for spotting that. It looks like a rendering glitch on the platform side—I'll check the source file and pin a fix in the description ASAP!"
+  },
+  {
+    "id": "c2",
+    "platform": "tiktok",
+    "username": "dammy_codes",
+    "text": "Hey senior man, I bought your frontend template guide 10 minutes ago but I haven't received the download link in my email yet. Please help!",
+    "aiCategory": "urgent",
+    "hasAiReply": true,
+    "suggestedReply": "Hi Dammy! Sorry about that delay. Please check your spam folder, and if it's still not there, DM me your email address directly so I can send it over right away."
+  },
+  {
+    "id": "c3",
+    "platform": "twitter",
+    "username": "chidi_dev",
+    "text": "What VS Code theme is this? It looks absolutely gorgeous.",
+    "aiCategory": "faq",
+    "clusterId": "theme_question",
+    "clusterName": "VS Code Theme Inquiries"
+  },
+  {
+    "id": "c4",
+    "platform": "instagram",
+    "username": "linda.devs",
+    "text": "Please what is the name of that dark mode theme you used??",
+    "aiCategory": "faq",
+    "clusterId": "theme_question",
+    "clusterName": "VS Code Theme Inquiries"
+  },
+  {
+    "id": "c5",
+    "platform": "tiktok",
+    "username": "user839201",
+    "text": "Drop the theme name boss, it looks neat",
+    "aiCategory": "faq",
+    "clusterId": "theme_question",
+    "clusterName": "VS Code Theme Inquiries"
+  },
+  {
+    "id": "c6",
+    "platform": "instagram",
+    "username": "tunde_builds",
+    "text": "Can you do a deep dive video on how you set up your Git branch workflows for team projects? That part was too fast.",
+    "aiCategory": "request",
+    "hasAiReply": false
+  },
+  {
+    "id": "c7",
+    "platform": "twitter",
+    "username": "joy_codes",
+    "text": "Brilliant explanation as always! 🔥🔥🔥",
+    "aiCategory": "vibes"
+  },
+  {
+    "id": "c8",
+    "platform": "tiktok",
+    "username": "vibe_programmer",
+    "text": "This video dropped just when I needed it. Absolute gold standard 🚀🙌",
+    "aiCategory": "vibes"
+  },
+  {
+    "id": "c9",
+    "platform": "instagram",
+    "username": "blessing_dev",
+    "text": "This is so clean! Keep it up 👑",
+    "aiCategory": "vibes"
+  },
+  {
+    "id": "c10",
+    "platform": "tiktok",
+    "username": "bayo.builds",
+    "text": "Insane value in this video man, thanks!",
+    "aiCategory": "vibes"
+  }
+]
