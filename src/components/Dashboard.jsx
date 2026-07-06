@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MessageSquare,
   AlertCircle,
@@ -8,15 +8,52 @@ import {
   Send,
   Check,
 } from "lucide-react";
-import commentsData from "../../commentsMock.json";
+import { supabase } from "../supabaseClient.js";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("all");
-  const [comments] = useState(commentsData);
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [actionedComments, setActionedComments] = useState({});
   const [vibesActioned, setVibesActioned] = useState(false);
 
-  // Core filter logic
+  // 1. Fetch live stream data from Supabase on component load
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from("comments")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        // Map database snake_case structure to frontend layout variables safely
+        const formattedData = data.map((c) => ({
+          id: c.id,
+          platform: c.platform,
+          username: c.username,
+          text: c.text,
+          aiCategory: c.ai_category,
+          clusterId: c.cluster_id,
+          clusterName: c.cluster_name,
+          hasAiReply: c.has_ai_reply,
+          suggestedReply: c.suggested_reply,
+        }));
+
+        setComments(formattedData);
+      } catch (err) {
+        console.error("Error fetching data layer:", err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, []);
+
+  // 2. Core filter logic
   const filteredComments = comments.filter((comment) => {
     if (activeTab === "all") return true;
     return comment.aiCategory === activeTab;
@@ -27,22 +64,32 @@ export default function Dashboard() {
     setActionedComments((prev) => ({ ...prev, [id]: true }));
   };
 
+  // Render a clean loading screen during initialization
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-slate-400 flex items-center justify-center text-sm font-medium tracking-wide">
+        <Sparkles className="w-5 h-5 text-indigo-400 animate-spin mr-2" />
+        Connecting to Live Stream Database...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex font-sans">
-      {/* 1. SIDEBAR */}
+      {/* SIDEBAR */}
       <aside className="w-64 border-r border-slate-800 bg-slate-900 p-6 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 mb-8">
             <Sparkles className="text-indigo-400 w-6 h-6 animate-pulse" />
             <span className="font-bold text-lg tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-              PulseStream AI
+              Creator Studio
             </span>
           </div>
 
           <nav className="space-y-2">
             <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-indigo-600 text-white font-medium transition">
               <MessageSquare className="w-5 h-5" />
-              Creator Studio
+              Comment Nexus
             </button>
           </nav>
         </div>
@@ -58,16 +105,17 @@ export default function Dashboard() {
         </div>
       </aside>
 
-      {/* 2. MAIN CONTENT AREA */}
+      {/* MAIN CONTAINER */}
       <main className="flex-1 p-8 overflow-y-auto">
-        {/* Top Header */}
         <header className="mb-8 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Comment Nexus</h1>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Social-Media-Creator-Tool
+            </h1>
             <p className="text-slate-400 text-sm mt-1">
               Active Stream:{" "}
               <span className="text-indigo-400 font-semibold">
-                "Building a Startup MVP in 3 Days" (Video #12)
+                "Building a Startup MVP in 3 Days" (Live Engine)
               </span>
             </p>
           </div>
@@ -123,14 +171,14 @@ export default function Dashboard() {
           })}
         </div>
 
-        {/* 3. DYNAMIC FEED CONTAINER */}
+        {/* DYNAMIC FEED CONTAINER */}
         <section className="max-w-4xl space-y-4">
           {filteredComments.length === 0 ? (
             <div className="text-center py-12 border border-dashed border-slate-800 rounded-xl text-slate-500">
               No comments here. All caught up!
             </div>
           ) : activeTab === "faq" ? (
-            /* --- FAQ CLUSTER VIEW --- */
+            /* --- FAQ CLUSTER MAP --- */
             Object.values(
               filteredComments.reduce((acc, comment) => {
                 const key = comment.clusterId || "unclustered";
@@ -187,7 +235,7 @@ export default function Dashboard() {
               </div>
             ))
           ) : activeTab === "vibes" ? (
-            /* --- PURE VIBES SECTION --- */
+            /* --- PURE VIBES MASS ENGINE MAP --- */
             <div className="space-y-4">
               {!vibesActioned ? (
                 <div className="bg-gradient-to-r from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-xl p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-xl">
@@ -207,7 +255,7 @@ export default function Dashboard() {
                   </div>
                   <button
                     onClick={() => setVibesActioned(true)}
-                    className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-3 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg whitespace-nowrap transition"
+                    className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-3 rounded-xl text-sm flex items-center justify-center gap-2 shadow-lg transition"
                   >
                     <Sparkles className="w-4 h-4" /> Auto-Like & Acknowledge All
                   </button>
@@ -241,7 +289,7 @@ export default function Dashboard() {
               </div>
             </div>
           ) : (
-            /* --- STANDARD SINGLE COMMENT VIEW (All, Urgent) --- */
+            /* --- STANDARD SINGLE COMMENT CARD --- */
             filteredComments.map((comment) => (
               <div
                 key={comment.id}

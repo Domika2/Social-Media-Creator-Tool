@@ -1,5 +1,6 @@
-import Document from "./components/Document.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import Document from "./components/Dashboard.jsx";
 
 export default function App() {
-  return <Document />;
+  return <Dashboard />;
 }
