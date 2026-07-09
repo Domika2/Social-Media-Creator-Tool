@@ -23,7 +23,7 @@ export default function Dashboard() {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from("comments")
+          .from("comments_streams")
           .select("*")
           .order("created_at", { ascending: false });
 
