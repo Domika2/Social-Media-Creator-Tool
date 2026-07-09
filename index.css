@@ -10,9 +10,23 @@ body,
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-color: #020617; /* Slate-950 color matching theme */
-  color: #f8fafc;
   overflow-x: hidden; /* Hard block against layout-breaking horizontal scrollbars */
+}
+
+/* Light theme (default) */
+html,
+body,
+#root {
+  background-color: #f8fafc; /* Slate-50 */
+  color: #0f172a; /* Slate-900 */
+}
+
+/* Dark theme, toggled by adding/removing the `dark` class on <html> */
+html.dark,
+html.dark body,
+html.dark #root {
+  background-color: #020617; /* Slate-950 */
+  color: #f8fafc; /* Slate-50 */
 }
 
 /* Scrollbar hiding utility used for the touch-swipeable navigation tabs row */

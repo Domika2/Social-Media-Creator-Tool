@@ -273,12 +273,12 @@ export default function Dashboard() {
       return (
         <div
           key={group.anchorId}
-          className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 shadow-lg relative w-full min-w-0"
+          className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-md relative w-full min-w-0 dark:bg-slate-900 dark:border-slate-800 dark:shadow-lg"
         >
-          <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 mb-4 pb-3 border-b border-slate-800">
+          <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
             <div className="flex items-center gap-2 min-w-0">
               {iconComponent}
-              <h3 className="font-semibold text-xs sm:text-sm text-slate-200 tracking-wide uppercase truncate">
+              <h3 className="font-semibold text-xs sm:text-sm text-slate-700 tracking-wide uppercase truncate dark:text-slate-200">
                 {isActualCluster
                   ? `Grouped ${groupTypeLabel} Stream`
                   : `Isolated ${groupTypeLabel}`}
@@ -292,19 +292,19 @@ export default function Dashboard() {
             </span>
           </div>
 
-          <div className="space-y-3 mb-4 pl-2 border-l-2 border-slate-800 overflow-x-hidden">
+          <div className="space-y-3 mb-4 pl-2 border-l-2 border-slate-200 overflow-x-hidden dark:border-slate-800">
             {group.items.map((item) => (
               <div
                 key={item.id}
-                className="text-xs sm:text-sm text-slate-300 flex flex-wrap items-center gap-x-2 gap-y-1"
+                className="text-xs sm:text-sm text-slate-600 flex flex-wrap items-center gap-x-2 gap-y-1 dark:text-slate-300"
               >
-                <span className="text-indigo-400 font-medium">
+                <span className="text-indigo-600 font-medium dark:text-indigo-400">
                   @{item.username}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-950 text-slate-400 font-mono lowercase shrink-0">
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 font-mono lowercase shrink-0 dark:bg-slate-950 dark:text-slate-400">
                   {item.platform}
                 </span>
-                <span className="text-slate-400 italic break-words w-full sm:w-auto">
+                <span className="text-slate-500 italic break-words w-full sm:w-auto dark:text-slate-400">
                   "{item.textBody}"
                 </span>
               </div>
@@ -312,9 +312,9 @@ export default function Dashboard() {
           </div>
 
           {activeTab === "vibes" ? (
-            <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
+            <div className="bg-slate-100 border border-slate-200 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full dark:bg-slate-950 dark:border-slate-800">
               <div className="min-w-0">
-                <p className="text-xs font-semibold text-emerald-400 flex items-center gap-1">
+                <p className="text-xs font-semibold text-emerald-600 flex items-center gap-1 dark:text-emerald-400">
                   <Heart className="w-3.5 h-3.5 fill-current" /> Unified
                   Reaction Console
                 </p>
@@ -331,13 +331,13 @@ export default function Dashboard() {
                       )
                     }
                     disabled={isGroupActioned}
-                    className="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-lg px-3 py-2 text-sm flex items-center gap-2 text-slate-200 transition h-9 min-w-[70px] justify-center"
+                    className="bg-white border border-slate-200 hover:border-slate-300 rounded-lg px-3 py-2 text-sm flex items-center gap-2 text-slate-700 transition h-9 min-w-[70px] justify-center dark:bg-slate-900 dark:border-slate-800 dark:hover:border-slate-700 dark:text-slate-200"
                   >
                     <span className="text-base">{currentChosenEmoji}</span>
                     <ChevronDown className="w-4 h-4 text-slate-500" />
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute right-0 bottom-full mb-2 bg-slate-900 border border-slate-700 rounded-xl p-1.5 grid grid-cols-5 gap-1 shadow-2xl z-50 w-44 sm:w-52 animate-in fade-in slide-in-from-bottom-2 duration-150">
+                    <div className="absolute right-0 bottom-full mb-2 bg-white border border-slate-200 rounded-xl p-1.5 grid grid-cols-5 gap-1 shadow-2xl z-50 w-44 sm:w-52 animate-in fade-in slide-in-from-bottom-2 duration-150 dark:bg-slate-900 dark:border-slate-700">
                       {EMOJI_CATALOG.map((emoji) => (
                         <button
                           key={emoji}
@@ -348,7 +348,7 @@ export default function Dashboard() {
                             }));
                             setActiveDropdownId(null);
                           }}
-                          className="text-base p-1.5 hover:bg-slate-800 rounded transition active:scale-95 text-center"
+                          className="text-base p-1.5 hover:bg-slate-100 rounded transition active:scale-95 text-center dark:hover:bg-slate-800"
                         >
                           {emoji}
                         </button>
@@ -380,8 +380,8 @@ export default function Dashboard() {
             </div>
           ) : (
             group.hasAiReply && (
-              <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 sm:p-4 w-full">
-                <div className="text-xs font-medium text-indigo-400 mb-2 flex items-center gap-1">
+              <div className="bg-slate-100 border border-slate-200 rounded-lg p-3 sm:p-4 w-full dark:bg-slate-950 dark:border-slate-800">
+                <div className="text-xs font-medium text-indigo-600 mb-2 flex items-center gap-1 dark:text-indigo-400">
                   <Sparkles className="w-3.5 h-3.5" /> Core Response Draft
                   (Editable)
                 </div>
@@ -393,7 +393,7 @@ export default function Dashboard() {
                       [group.anchorId]: e.target.value,
                     }))
                   }
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs sm:text-sm text-slate-200 focus:outline-none focus:border-indigo-500 h-20 resize-none mb-3 block box-border"
+                  className="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs sm:text-sm text-slate-700 focus:outline-none focus:border-indigo-500 h-20 resize-none mb-3 block box-border dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200"
                 />
                 <div className="flex justify-end">
                   <button
@@ -425,7 +425,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row font-sans overflow-x-hidden antialiased">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col md:flex-row font-sans overflow-x-hidden antialiased transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
       {/* BACKGROUND OVERLAY SHIELD (Visible only on mobile when menu is active) */}
       <div
         onClick={() => setIsMobileMenuOpen(false)}
@@ -437,18 +437,18 @@ export default function Dashboard() {
       />
 
       {/* MOBILE HEADER HEADLINE (Visible below desktop breakpoint) */}
-      <div className="md:hidden w-full bg-slate-900/90 border-b border-slate-800/80 px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md shadow-md">
+      <div className="md:hidden w-full bg-white/90 border-b border-slate-200/80 px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 backdrop-blur-md shadow-md dark:bg-slate-900/90 dark:border-slate-800/80">
         <div className="flex items-center gap-2">
           <Sparkles className="text-indigo-400 w-5 h-5 animate-pulse" />
           <span className="font-bold text-base tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-            SynaxixA
+            Creator's Studio
           </span>
         </div>
 
         {/* Toggle Hamburger Trigger */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="p-2 text-slate-400 hover:text-white bg-slate-800/60 rounded-xl transition-colors"
+          className="p-2 text-slate-500 hover:text-slate-900 bg-slate-100 rounded-xl transition-colors dark:text-slate-400 dark:hover:text-white dark:bg-slate-800/60"
           aria-label="Open sidebar panel navigation"
         >
           <Menu className="w-5 h-5" />
@@ -458,9 +458,10 @@ export default function Dashboard() {
       {/* RESPONSIVE LEFT SIDEPANEL DRAWER (Slides over gracefully on mobile, docks on desktop) */}
       <aside
         className={`
-        fixed inset-y-0 left-0 w-72 bg-slate-900 p-6 flex flex-col justify-between border-r border-slate-800 z-50 
-        transition-transform duration-300 ease-in-out transform will-change-transform shadow-2xl shadow-black/80
+        fixed inset-y-0 left-0 w-72 bg-white p-6 flex flex-col justify-between border-r border-slate-200 z-50 
+        transition-transform duration-300 ease-in-out transform will-change-transform shadow-2xl shadow-black/10
         md:sticky md:top-0 md:h-screen md:w-64 md:translate-x-0 md:shadow-none
+        dark:bg-slate-900 dark:border-slate-800 dark:shadow-black/80
         ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}
       `}
       >
@@ -475,7 +476,7 @@ export default function Dashboard() {
             {/* Close cross panel button for small mobile resolution metrics */}
             <button
               onClick={() => setIsMobileMenuOpen(false)}
-              className="md:hidden p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+              className="md:hidden p-2 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800"
               aria-label="Close sidebar panel navigation"
             >
               <X className="w-5 h-5" />
@@ -488,7 +489,7 @@ export default function Dashboard() {
             <MessageSquare className="w-5 h-5" /> Comment Nexus
           </button>
         </div>
-        <div className="pt-4 border-t border-slate-800 text-[11px] text-slate-500 font-mono tracking-wide">
+        <div className="pt-4 border-t border-slate-200 text-[11px] text-slate-500 font-mono tracking-wide dark:border-slate-800">
           SYSTEM LEVEL ACTIVE
         </div>
       </aside>
@@ -496,10 +497,10 @@ export default function Dashboard() {
       {/* RIGHT SIDE DATA FEED WORKSPACE */}
       <main className="flex-1 p-4 sm:p-6 md:p-8 w-full max-w-full box-border overflow-y-auto">
         <header className="mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-100 break-words">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 break-words dark:text-slate-100">
             Social-Media-Creator-Tool
           </h1>
-          <p className="text-slate-400 text-xs sm:text-sm mt-1 leading-relaxed">
+          <p className="text-slate-500 text-xs sm:text-sm mt-1 leading-relaxed dark:text-slate-400">
             Cross-Platform Nexus Engine: Handling YouTube, Instagram, TikTok,
             Twitter & Facebook
           </p>
@@ -507,13 +508,13 @@ export default function Dashboard() {
 
         {/* Swipeable Tab Carousel Container Row */}
         <div className="w-full overflow-x-auto pb-3 mb-6 scrollbar-none snap-x">
-          <div className="flex bg-slate-900 p-1 rounded-xl border border-slate-800 w-max min-w-full sm:min-w-0 sm:w-full max-w-xl gap-1">
+          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200 w-max min-w-full sm:min-w-0 sm:w-full max-w-xl gap-1 dark:bg-slate-900 dark:border-slate-800">
             {[
               {
                 id: "all",
                 label: "All Feed",
                 icon: MessageSquare,
-                color: "text-slate-400",
+                color: "text-slate-500 dark:text-slate-400",
               },
               {
                 id: "urgent",
@@ -541,8 +542,8 @@ export default function Dashboard() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 sm:px-3.5 rounded-lg text-xs font-semibold transition whitespace-nowrap ${
                     activeTab === tab.id
-                      ? "bg-slate-800 text-white border border-slate-700 shadow-lg"
-                      : "text-slate-400 hover:text-slate-200"
+                      ? "bg-white text-slate-900 border border-slate-200 shadow-sm dark:bg-slate-800 dark:text-white dark:border-slate-700 dark:shadow-lg"
+                      : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
                   }`}
                 >
                   <Icon className={`w-4 h-4 shrink-0 ${tab.color}`} />{" "}
@@ -560,7 +561,7 @@ export default function Dashboard() {
               Connecting backend database context...
             </div>
           ) : filteredComments.length === 0 ? (
-            <div className="text-center py-12 border border-dashed border-slate-800 rounded-xl text-slate-500 text-xs sm:text-sm">
+            <div className="text-center py-12 border border-dashed border-slate-300 rounded-xl text-slate-500 text-xs sm:text-sm dark:border-slate-800">
               No active events found. All caught up!
             </div>
           ) : activeTab === "urgent" ? (
@@ -590,24 +591,24 @@ export default function Dashboard() {
               return (
                 <div
                   key={comment.id}
-                  className="bg-slate-900 border border-slate-800 rounded-xl p-4 sm:p-5 shadow-md flex flex-col gap-3 w-full min-w-0"
+                  className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm flex flex-col gap-3 w-full min-w-0 dark:bg-slate-900 dark:border-slate-800 dark:shadow-md"
                 >
-                  <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 pb-2 border-b border-slate-800/60">
+                  <div className="flex flex-wrap sm:flex-nowrap justify-between items-center gap-2 pb-2 border-b border-slate-200/60 dark:border-slate-800/60">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="font-semibold text-xs sm:text-sm text-indigo-300 truncate">
+                      <span className="font-semibold text-xs sm:text-sm text-indigo-600 truncate dark:text-indigo-300">
                         @{comment.username}
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-950 text-slate-400 font-mono lowercase shrink-0">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-mono lowercase shrink-0 dark:bg-slate-950 dark:text-slate-400">
                         {comment.platform}
                       </span>
                     </div>
                   </div>
-                  <p className="text-slate-200 text-xs sm:text-sm italic break-words leading-relaxed">
+                  <p className="text-slate-700 text-xs sm:text-sm italic break-words leading-relaxed dark:text-slate-200">
                     "{comment.text}"
                   </p>
 
                   {comment.hasAiReply && (
-                    <div className="bg-slate-950 border border-slate-800 rounded-lg p-3 space-y-3 w-full">
+                    <div className="bg-slate-100 border border-slate-200 rounded-lg p-3 space-y-3 w-full dark:bg-slate-950 dark:border-slate-800">
                       <textarea
                         value={customReplies[comment.id] || ""}
                         onChange={(e) =>
@@ -616,7 +617,7 @@ export default function Dashboard() {
                             [comment.id]: e.target.value,
                           }))
                         }
-                        className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-2 text-xs sm:text-sm text-slate-200 focus:outline-none h-16 resize-none block box-border"
+                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-2 text-xs sm:text-sm text-slate-700 focus:outline-none h-16 resize-none block box-border dark:bg-slate-900 dark:border-slate-800 dark:text-slate-200"
                       />
                       <div className="flex justify-end">
                         <button

@@ -2,6 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Anti-flash theme init: must run before any paint, before stylesheets even -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        var isDark = stored ? stored === "dark" : prefersDark;
+        document.documentElement.classList.toggle("dark", isDark);
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Creator Studio Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,6 +23,14 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // CDN playground build reads config from this global, separate from tailwind.config.js
+      // (which governs the PostCSS/Vite build). Both need darkMode: 'class'.
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { screens: { xs: "375px" } } },
+      };
+    </script>
     <style>
       body {
         font-family:
@@ -30,7 +49,11 @@
         padding: 0;
         width: 100%;
         overflow-x: hidden;
-        background-color: #020617; /* Matches Tailwind's bg-slate-950 */
+        background-color: #f8fafc; /* light default, matches bg-slate-100/50-ish */
+      }
+      html.dark,
+      html.dark body {
+        background-color: #020617; /* dark default, matches Tailwind's bg-slate-950 */
       }
 
       /* Optional utility to cleanly hide scrollbars on touch-scroll carousels (like your Tab selection) */
@@ -44,98 +67,142 @@
     </style>
   </head>
   <body
-    class="bg-slate-950 antialiased selection:bg-indigo-500/30 selection:text-indigo-200"
+    class="bg-slate-100 text-slate-900 antialiased selection:bg-indigo-500/30 selection:text-indigo-200 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-50"
   >
     <div id="root" class="min-h-screen w-full flex flex-col">
       <div
-        class="flex flex-1 flex-col overflow-hidden rounded-none border-0 border-slate-800 bg-slate-900 shadow-2xl shadow-slate-950/40 sm:rounded-3xl sm:border lg:flex-row"
+        class="flex flex-1 flex-col overflow-hidden rounded-none border-0 border-slate-200 bg-white shadow-2xl shadow-slate-300/40 transition-colors duration-200 sm:rounded-3xl sm:border lg:flex-row dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/40"
       >
         <aside
-          class="w-full border-b border-slate-800 bg-slate-950 p-4 sm:p-6 lg:w-[320px] lg:max-w-[320px] lg:shrink-0 lg:border-b-0 lg:border-r"
+          class="w-full border-b border-slate-200 bg-slate-50 p-4 transition-colors duration-200 sm:p-6 lg:w-[320px] lg:max-w-[320px] lg:shrink-0 lg:border-b-0 lg:border-r dark:border-slate-800 dark:bg-slate-950"
         >
-          <div class="mb-10 flex items-center gap-3">
-            <div
-              class="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500 text-base font-semibold text-white shadow-lg shadow-indigo-500/20"
+          <div class="mb-10 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div
+                class="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-500 text-base font-semibold text-white shadow-lg shadow-indigo-500/20"
+              >
+                CS
+              </div>
+              <div>
+                <p class="text-sm uppercase tracking-[0.3em] text-slate-500">
+                  Creator Studio
+                </p>
+                <h1
+                  class="text-xl font-semibold text-slate-900 dark:text-slate-100"
+                >
+                  Meta Studio
+                </h1>
+              </div>
+            </div>
+
+            <!-- Theme toggle: shows sun in dark mode (click to go light), moon in light mode (click to go dark) -->
+            <button
+              id="theme-toggle"
+              type="button"
+              aria-label="Toggle light and dark theme"
+              class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              CS
-            </div>
-            <div>
-              <p class="text-sm uppercase tracking-[0.3em] text-slate-500">
-                Creator Studio
-              </p>
-              <h1 class="text-xl font-semibold text-slate-100">Meta Studio</h1>
-            </div>
+              <!-- Sun icon: visible in dark mode (click to switch to light) -->
+              <svg
+                class="hidden h-4 w-4 dark:block"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="4"></circle>
+                <path
+                  d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
+                ></path>
+              </svg>
+              <!-- Moon icon: visible in light mode (click to switch to dark) -->
+              <svg
+                class="block h-4 w-4 dark:hidden"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+            </button>
           </div>
 
           <nav
-            class="scrollbar-none flex gap-2 overflow-x-auto text-sm text-slate-300 lg:block lg:space-y-2 lg:overflow-visible"
+            class="scrollbar-none flex gap-2 overflow-x-auto text-sm text-slate-600 lg:block lg:space-y-2 lg:overflow-visible dark:text-slate-300"
           >
             <a
               href="#"
-              class="flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-2xl bg-slate-900 px-4 py-3 font-medium text-slate-100 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="flex shrink-0 items-center justify-between gap-2 whitespace-nowrap rounded-2xl bg-white px-4 py-3 font-medium text-slate-900 shadow-sm transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:bg-slate-900 dark:text-slate-100 dark:shadow-none dark:hover:bg-slate-800"
             >
               <span>Overview</span>
               <span
-                class="rounded-full bg-slate-700 px-2 py-1 text-[11px] text-slate-300"
+                class="rounded-full bg-slate-200 px-2 py-1 text-[11px] text-slate-600 dark:bg-slate-700 dark:text-slate-300"
                 >New</span
               >
             </a>
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Posts</a
             >
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Insights</a
             >
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Ads</a
             >
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Inbox</a
             >
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Monetization</a
             >
             <a
               href="#"
-              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 transition hover:bg-slate-800 lg:shrink lg:whitespace-normal"
+              class="block shrink-0 whitespace-nowrap rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 lg:shrink lg:whitespace-normal dark:text-slate-300 dark:hover:bg-slate-800"
               >Settings</a
             >
           </nav>
 
           <div
-            class="mt-10 rounded-3xl border border-slate-800 bg-slate-900 p-4 text-sm text-slate-300 shadow-inner shadow-slate-950/50"
+            class="mt-10 rounded-3xl border border-slate-200 bg-white p-4 text-sm text-slate-600 shadow-inner shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:shadow-slate-950/50"
           >
-            <p class="text-slate-400">Live activity</p>
+            <p class="text-slate-500 dark:text-slate-400">Live activity</p>
             <div
               class="mt-5 grid grid-cols-1 gap-3 text-sm sm:grid-cols-3 lg:grid-cols-1"
             >
               <div
-                class="flex items-center justify-between rounded-2xl bg-slate-950 px-4 py-3"
+                class="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 dark:bg-slate-950"
               >
                 <span>Views</span>
-                <span class="text-indigo-300">14.2K</span>
+                <span class="text-indigo-600 dark:text-indigo-300">14.2K</span>
               </div>
               <div
-                class="flex items-center justify-between rounded-2xl bg-slate-950 px-4 py-3"
+                class="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 dark:bg-slate-950"
               >
                 <span>Comments</span>
-                <span class="text-emerald-300">1.2K</span>
+                <span class="text-emerald-600 dark:text-emerald-300">1.2K</span>
               </div>
               <div
-                class="flex items-center justify-between rounded-2xl bg-slate-950 px-4 py-3"
+                class="flex items-center justify-between rounded-2xl bg-slate-100 px-4 py-3 dark:bg-slate-950"
               >
                 <span>CTR</span>
-                <span class="text-amber-300">6.8%</span>
+                <span class="text-amber-600 dark:text-amber-300">6.8%</span>
               </div>
             </div>
           </div>
@@ -143,7 +210,7 @@
 
         <main class="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
           <header
-            class="mb-6 flex flex-col gap-4 rounded-[1.5rem] border border-slate-800 bg-slate-950/90 p-4 shadow-xl shadow-slate-950/40 backdrop-blur-xl sm:mb-8 sm:rounded-[2rem] sm:p-6"
+            class="mb-6 flex flex-col gap-4 rounded-[1.5rem] border border-slate-200 bg-white/90 p-4 shadow-xl shadow-slate-300/40 backdrop-blur-xl transition-colors duration-200 sm:mb-8 sm:rounded-[2rem] sm:p-6 dark:border-slate-800 dark:bg-slate-950/90 dark:shadow-slate-950/40"
           >
             <div class="flex flex-wrap items-center justify-between gap-4">
               <div>
@@ -152,29 +219,51 @@
                 >
                   Latest Post
                 </p>
-                <h2 class="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+                <h2
+                  class="mt-2 text-2xl font-semibold text-slate-900 sm:text-3xl dark:text-white"
+                >
                   My Latest Coding Setup Reel
                 </h2>
               </div>
               <div
-                class="rounded-3xl border border-slate-800 bg-slate-900 px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-300"
+                class="rounded-3xl border border-slate-200 bg-slate-100 px-4 py-2 text-xs uppercase tracking-[0.25em] text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
               >
                 Draft stage
               </div>
             </div>
 
             <div class="grid gap-4 sm:grid-cols-3">
-              <div class="rounded-3xl border border-slate-800 bg-slate-900 p-4">
-                <p class="text-sm text-slate-400">Reach</p>
-                <p class="mt-2 text-2xl font-semibold text-white">28.4K</p>
+              <div
+                class="rounded-3xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+              >
+                <p class="text-sm text-slate-500 dark:text-slate-400">Reach</p>
+                <p
+                  class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white"
+                >
+                  28.4K
+                </p>
               </div>
-              <div class="rounded-3xl border border-slate-800 bg-slate-900 p-4">
-                <p class="text-sm text-slate-400">Engagement</p>
-                <p class="mt-2 text-2xl font-semibold text-white">4.9K</p>
+              <div
+                class="rounded-3xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+              >
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                  Engagement
+                </p>
+                <p
+                  class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white"
+                >
+                  4.9K
+                </p>
               </div>
-              <div class="rounded-3xl border border-slate-800 bg-slate-900 p-4">
-                <p class="text-sm text-slate-400">Shares</p>
-                <p class="mt-2 text-2xl font-semibold text-white">820</p>
+              <div
+                class="rounded-3xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+              >
+                <p class="text-sm text-slate-500 dark:text-slate-400">Shares</p>
+                <p
+                  class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white"
+                >
+                  820
+                </p>
               </div>
             </div>
           </header>
@@ -183,45 +272,75 @@
 
           <section class="grid gap-4 sm:gap-6 lg:grid-cols-[1.4fr_0.85fr]">
             <article
-              class="min-w-0 rounded-3xl border border-slate-800 bg-slate-900 p-4 shadow-lg shadow-slate-950/30 sm:p-6"
+              class="min-w-0 rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 transition-colors duration-200 sm:p-6 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/30"
             >
               <div class="mb-5 flex items-center gap-4">
                 <div
                   class="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500"
                 ></div>
                 <div>
-                  <p class="text-sm text-slate-400">Posted by Creator</p>
-                  <h3 class="text-xl font-semibold text-white">
+                  <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Posted by Creator
+                  </p>
+                  <h3
+                    class="text-xl font-semibold text-slate-900 dark:text-white"
+                  >
                     Coding Setup + Studio Tour
                   </h3>
                 </div>
               </div>
-              <p class="text-slate-300">
+              <p class="text-slate-600 dark:text-slate-300">
                 A quick walkthrough of the latest screen, keyboard, and editing
                 stack. Real-time insights on what’s working in the creator
                 workflow funnel.
               </p>
               <div class="mt-6 grid gap-3 sm:grid-cols-3">
-                <div class="rounded-3xl bg-slate-950 p-4 text-center">
-                  <p class="text-sm text-slate-400">Impressions</p>
-                  <p class="mt-2 text-lg font-semibold text-white">12.1K</p>
+                <div
+                  class="rounded-3xl bg-slate-100 p-4 text-center dark:bg-slate-950"
+                >
+                  <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Impressions
+                  </p>
+                  <p
+                    class="mt-2 text-lg font-semibold text-slate-900 dark:text-white"
+                  >
+                    12.1K
+                  </p>
                 </div>
-                <div class="rounded-3xl bg-slate-950 p-4 text-center">
-                  <p class="text-sm text-slate-400">Comments</p>
-                  <p class="mt-2 text-lg font-semibold text-white">1.1K</p>
+                <div
+                  class="rounded-3xl bg-slate-100 p-4 text-center dark:bg-slate-950"
+                >
+                  <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Comments
+                  </p>
+                  <p
+                    class="mt-2 text-lg font-semibold text-slate-900 dark:text-white"
+                  >
+                    1.1K
+                  </p>
                 </div>
-                <div class="rounded-3xl bg-slate-950 p-4 text-center">
-                  <p class="text-sm text-slate-400">Saved</p>
-                  <p class="mt-2 text-lg font-semibold text-white">3.2K</p>
+                <div
+                  class="rounded-3xl bg-slate-100 p-4 text-center dark:bg-slate-950"
+                >
+                  <p class="text-sm text-slate-500 dark:text-slate-400">
+                    Saved
+                  </p>
+                  <p
+                    class="mt-2 text-lg font-semibold text-slate-900 dark:text-white"
+                  >
+                    3.2K
+                  </p>
                 </div>
               </div>
             </article>
 
             <aside class="space-y-6">
               <div
-                class="rounded-3xl border border-slate-800 bg-slate-900 p-5 shadow-inner shadow-slate-950/30"
+                class="rounded-3xl border border-slate-200 bg-white p-5 shadow-inner shadow-slate-200/40 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900 dark:shadow-slate-950/30"
               >
-                <p class="text-sm text-slate-400">Quick actions</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">
+                  Quick actions
+                </p>
                 <div class="mt-4 space-y-3">
                   <button
                     class="w-full rounded-2xl bg-indigo-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-400"
@@ -229,20 +348,28 @@
                     Publish reel
                   </button>
                   <button
-                    class="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-200 transition hover:border-slate-500"
+                    class="w-full rounded-2xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-700 transition hover:border-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:border-slate-500"
                   >
                     Boost post
                   </button>
                 </div>
               </div>
-              <div class="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-                <p class="text-sm text-slate-400">Status</p>
+              <div
+                class="rounded-3xl border border-slate-200 bg-white p-5 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900"
+              >
+                <p class="text-sm text-slate-500 dark:text-slate-400">Status</p>
                 <div
-                  class="mt-4 flex items-center justify-between rounded-3xl bg-slate-950 px-4 py-4"
+                  class="mt-4 flex items-center justify-between rounded-3xl bg-slate-100 px-4 py-4 dark:bg-slate-950"
                 >
                   <div>
-                    <p class="text-sm text-slate-300">Audience growth</p>
-                    <p class="mt-1 text-xl font-semibold text-white">+8.7%</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">
+                      Audience growth
+                    </p>
+                    <p
+                      class="mt-1 text-xl font-semibold text-slate-900 dark:text-white"
+                    >
+                      +8.7%
+                    </p>
                   </div>
                   <span
                     class="rounded-full bg-emerald-500 px-3 py-1 text-xs font-semibold uppercase text-slate-950"
@@ -256,6 +383,16 @@
       </div>
     </div>
 
+    <script>
+      // Theme toggle button behavior
+      document
+        .getElementById("theme-toggle")
+        .addEventListener("click", function () {
+          var root = document.documentElement;
+          var isDark = root.classList.toggle("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+    </script>
     <script type="module" src="/src/Main.jsx"></script>
   </body>
 </html>
