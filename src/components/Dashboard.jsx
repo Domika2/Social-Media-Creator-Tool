@@ -23,24 +23,24 @@ export default function Dashboard() {
       try {
         setLoading(true);
         const { data, error } = await supabase
-          .from("comments_streams")
+          .from("comment_streams")
           .select("*")
           .order("created_at", { ascending: false });
 
         if (error) throw error;
 
         // Map database snake_case structure to frontend layout variables safely
-        // const formattedData = data.map((c) => ({
-        //   id: c.id,
-        //   platform: c.platform,
-        //   username: c.username,
-        //   text: c.text,
-        //   aiCategory: c.ai_category,
-        //   clusterId: c.cluster_id,
-        //   clusterName: c.cluster_name,
-        //   hasAiReply: c.has_ai_reply,
-        //   suggestedReply: c.suggested_reply,
-        // }));
+        const formattedData = data.map((c) => ({
+          id: c.id,
+          platform: c.platform,
+          username: c.username,
+          text: c.text,
+          aiCategory: c.ai_category,
+          clusterId: c.cluster_id,
+          clusterName: c.cluster_name,
+          hasAiReply: c.has_ai_reply,
+          suggestedReply: c.suggested_reply,
+        }));
 
         setComments(formattedData);
       } catch (err) {
