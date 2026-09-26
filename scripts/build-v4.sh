@@ -9,6 +9,16 @@ base64 -d .v4/work/source.b64 > .v4/work/source.tar.gz
 tar -xzf .v4/work/source.tar.gz -C .v4/work
 
 cd .v4/work/creators-studio-web
+python - <<'PY'
+from pathlib import Path
+p = Path("src/app/publish/page.tsx")
+s = p.read_text()
+s = s.replace(
+    "const dripDelayMs = snapshot.publishingDefaults.dripDelayMinutes * 60 * 1000;",
+    "const dripDelayMs = (snapshot?.publishingDefaults.dripDelayMinutes ?? 0) * 60 * 1000;"
+)
+p.write_text(s)
+PY
 npm install --no-audit --no-fund
 npm run build
 
